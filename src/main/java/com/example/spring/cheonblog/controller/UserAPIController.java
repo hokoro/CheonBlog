@@ -1,5 +1,7 @@
 package com.example.spring.cheonblog.controller;
 
+import com.example.spring.cheonblog.dto.LoginFormDTO;
+import com.example.spring.cheonblog.dto.LoginResponseFormDTO;
 import com.example.spring.cheonblog.dto.UserCreateFormDTO;
 import com.example.spring.cheonblog.dto.UserResponseFormDTO;
 import com.example.spring.cheonblog.service.interfaces.UserService;
@@ -22,5 +24,9 @@ public class UserAPIController {
         return userService.create(userCreateFormDTO);
     }
 
+    @PostMapping("/user/login")
+    public ResponseEntity<LoginResponseFormDTO> login(@RequestBody LoginFormDTO loginFormDTO) {
+        return userService.login(loginFormDTO);
+    }
 
 }
