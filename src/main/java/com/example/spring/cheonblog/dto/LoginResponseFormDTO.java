@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LoginResponseFormDTO {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private String message;
 }

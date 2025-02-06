@@ -57,10 +57,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(loginFormDTO.getEmail()));
 
         if (user.isPresent() && passwordEncoder.matches(loginFormDTO.getPassword(), user.get().getPassword())) {    // 로그인 정보가 일치 했을 때
-            String token = jwtUtil.generateToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
-            return new ResponseEntity<>(new LoginResponseFormDTO(token , "로그인 성공했습니다."),HttpStatus.OK);
+            String accessToken = jwtUtil.generateAccessToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
+            String refreshToken = jwtUtil.generateRefreshToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
+
+            return new ResponseEntity<>(new LoginResponseFormDTO(accessToken ,refreshToken, "로그인 성공했습니다."),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new LoginResponseFormDTO(null,"이메일이나 비밀번호가 일치하지 않습니다."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new LoginResponseFormDTO(null,null,"이메일이나 비밀번호가 일치하지 않습니다."), HttpStatus.UNAUTHORIZED);
     }
 
 }
