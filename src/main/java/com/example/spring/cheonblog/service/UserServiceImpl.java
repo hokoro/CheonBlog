@@ -1,15 +1,13 @@
 package com.example.spring.cheonblog.service;
 
 import com.example.spring.cheonblog.domain.User;
-import com.example.spring.cheonblog.dto.LoginFormDTO;
-import com.example.spring.cheonblog.dto.LoginResponseFormDTO;
-import com.example.spring.cheonblog.dto.UserCreateFormDTO;
-import com.example.spring.cheonblog.dto.UserResponseFormDTO;
+import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.jwt.JwtUtil;
 import com.example.spring.cheonblog.repository.UserRepository;
 import com.example.spring.cheonblog.service.interfaces.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +21,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;    // User Repository
 
+    private final JwtUtil jwtUtil;
 
+    private final RedisService redisService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // 비밀번호 조작
 
     // User Create
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private final JwtUtil jwtUtil;
+
 
     @Override
     public ResponseEntity<LoginResponseFormDTO> login(LoginFormDTO loginFormDTO) {
@@ -60,9 +60,29 @@ public class UserServiceImpl implements UserService {
             String accessToken = jwtUtil.generateAccessToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
             String refreshToken = jwtUtil.generateRefreshToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
 
+            redisService.saveRefreshToken(loginFormDTO.getEmail() , passwordEncoder.encode(refreshToken));
+
             return new ResponseEntity<>(new LoginResponseFormDTO(accessToken ,refreshToken, "로그인 성공했습니다."),HttpStatus.OK);
         }
         return new ResponseEntity<>(new LoginResponseFormDTO(null,null,"이메일이나 비밀번호가 일치하지 않습니다."), HttpStatus.UNAUTHORIZED);
     }
+
+
+    @Override
+    public ResponseEntity<RefreshResponseFormDTO> refresh(RefreshFormDTO refreshFormDTO){
+        String refreshToken = refreshFormDTO.getRefreshToken();
+
+        if(refreshToken!=null && jwtUtil.validateToken(refreshToken)){
+            String email = jwtUtil.getEmailFromToken(refreshToken);
+            if(passwordEncoder.matches(refreshToken, redisService.getRefreshToken(email))){
+                String newAccessToken = jwtUtil.generateAccessToken(email);
+                return new ResponseEntity<>(new RefreshResponseFormDTO(newAccessToken , "새로운 토큰을 발급합니다."), HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>(new RefreshResponseFormDTO("null","사용할 수 없는 토큰입니다."),HttpStatus.UNAUTHORIZED);
+
+    }
+
 
 }

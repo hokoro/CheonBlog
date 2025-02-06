@@ -1,9 +1,6 @@
 package com.example.spring.cheonblog.controller;
 
-import com.example.spring.cheonblog.dto.LoginFormDTO;
-import com.example.spring.cheonblog.dto.LoginResponseFormDTO;
-import com.example.spring.cheonblog.dto.UserCreateFormDTO;
-import com.example.spring.cheonblog.dto.UserResponseFormDTO;
+import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +24,11 @@ public class UserAPIController {
     @PostMapping("/user/login")
     public ResponseEntity<LoginResponseFormDTO> login(@RequestBody LoginFormDTO loginFormDTO) {
         return userService.login(loginFormDTO);
+    }
+
+    @PostMapping("/user/redis")
+    public ResponseEntity<RefreshResponseFormDTO> refresh(@RequestBody RefreshFormDTO refreshFormDTO){
+        return userService.refresh(refreshFormDTO);
     }
 
 }
