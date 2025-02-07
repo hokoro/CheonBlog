@@ -61,4 +61,22 @@ public class JwtUtil {
             return false;
         }
     }
+
+    // 만료 시간
+    public long getExpirationTime(String token){
+        try{
+            Claims claims = Jwts.parser()
+                    .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8))) // 서명 검증
+                    .build()
+                    .parseClaimsJws(token)  // JWT 파싱 및 검증
+                    .getBody();  // Claims(페이로드) 가져오기
+            Date expiration = claims.getExpiration(); // 만료 시간 가져오기
+            return expiration.getTime(); // 밀리초 단위로 변환하여 반환
+
+        }catch (JwtException e){
+            throw new IllegalArgumentException("Invalid JWT token", e);
+        }
+    }
+
+
 }

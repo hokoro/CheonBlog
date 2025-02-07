@@ -68,6 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
+    // 토큰 재발급
     @Override
     public ResponseEntity<RefreshResponseFormDTO> refresh(RefreshFormDTO refreshFormDTO){
         String refreshToken = refreshFormDTO.getRefreshToken();
@@ -82,6 +84,27 @@ public class UserServiceImpl implements UserService {
 
         return new ResponseEntity<>(new RefreshResponseFormDTO("null","사용할 수 없는 토큰입니다."),HttpStatus.UNAUTHORIZED);
 
+    }
+
+
+
+    //로그 아웃
+    @Override
+    public ResponseEntity<LogoutResponseFormDTO> logout(LogoutFormDTO logoutFormDTO) {
+        String accessToken = logoutFormDTO.getAccessToken();
+
+        if (accessToken.startsWith("Bearer ")) {  // Bearer 문자 제거
+            accessToken = accessToken.substring(7);
+        }
+
+        if (jwtUtil.validateToken(accessToken)) {       // 검증된 사용자인지
+            String email = jwtUtil.getEmailFromToken(accessToken);   // 이메일 추출
+            long expiration = jwtUtil.getExpirationTime(accessToken);   // 시간 추출
+            redisService.addToBlacklist(accessToken, expiration);  // 사용자 블랙리스트 등록
+            return new ResponseEntity<>(new LogoutResponseFormDTO("로그아웃 되었습니다."),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new LogoutResponseFormDTO("유효한 토큰이 아닙니다."), HttpStatus.UNAUTHORIZED);
+        }
     }
 
 

@@ -31,4 +31,10 @@ public class UserAPIController {
         return userService.refresh(refreshFormDTO);
     }
 
+    @PostMapping("/user/logout")
+    public ResponseEntity<LogoutResponseFormDTO> logout(@RequestBody LogoutFormDTO logoutFormDTO){
+        return userService.logout(logoutFormDTO);
+    }
+
+
 }

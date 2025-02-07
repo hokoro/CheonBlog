@@ -1,5 +1,6 @@
 package com.example.spring.cheonblog.jwt;
 
+import com.example.spring.cheonblog.service.RedisService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,12 +21,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {     // 요�
 
     private final JwtUtil jwtUtil;      // JWT 유틸리티 클래스 의존성 주입
 
+    private final RedisService redisService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)          // JWT 검증하고 검증된 사용자 정보를 Security Context Holder에 저장  -> 인증된 사용자를 저장하는 저장소 역할
             throws ServletException, IOException {
 
         String token = getTokenFromRequest(request);            //HTTP 요청에서 JWT 토큰을 추출
         if (token != null && jwtUtil.validateToken(token)) {    // 토큰이 존재하고 검증도 완벽한 경우
+
+            // 블랙리스트 확인 (Redis에서 확인)
+            if (redisService.isBlackList(token)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // 블랙리스트에 있으면 Unauthorized 응답
+                response.getWriter().write("사용할 수 없는 토큰입니다.");  // 추가적인 메시지
+                return;  // 이후 필터 체인 진행하지 않음
+            }
+
             String email = jwtUtil.getEmailFromToken(token);     // 이메일 추출
             UserDetails userDetails = User.builder()
                     .username(email)                            // 사용자 설정 이메일

@@ -10,4 +10,7 @@ public interface UserService {
     ResponseEntity<LoginResponseFormDTO> login(LoginFormDTO loginFormDTO);
 
     ResponseEntity<RefreshResponseFormDTO> refresh(RefreshFormDTO refreshFormDTO);
+
+
+    ResponseEntity<LogoutResponseFormDTO> logout(LogoutFormDTO logoutFormDTO);
 }
