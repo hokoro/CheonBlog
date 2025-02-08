@@ -22,6 +22,10 @@ public class RedisService {
     public void saveRefreshToken(String email , String refreshToken){
         redisTemplate.opsForValue().set(email , refreshToken , 7, TimeUnit.DAYS);   // 7일 저장
     }
+    // delete
+    public void deleteLoginInfo(String email){
+        redisTemplate.delete(email);
+    }
 
     // email을 Key refresh Token을 얻는 과정
     public String getRefreshToken(String email){

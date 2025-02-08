@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
             String email = jwtUtil.getEmailFromToken(accessToken);   // 이메일 추출
             long expiration = jwtUtil.getExpirationTime(accessToken);   // 시간 추출
             redisService.addToBlacklist(accessToken, expiration);  // 사용자 블랙리스트 등록
+            redisService.deleteLoginInfo(email);    // 로그아웃 시 redis에 남아있는 회원 정보 삭제
             return new ResponseEntity<>(new LogoutResponseFormDTO("로그아웃 되었습니다."),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new LogoutResponseFormDTO("유효한 토큰이 아닙니다."), HttpStatus.UNAUTHORIZED);
