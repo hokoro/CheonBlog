@@ -1,5 +1,5 @@
 import React,{useState , useEffect} from 'react';
-
+import {useNavigate} from "react-router-dom";
 // 블로그 설명 글에 사용할 문구
 const descriptions = [
     "나만의 블로그를 꾸밀 수 있습니다.",
@@ -10,6 +10,8 @@ const descriptions = [
 
 
 function MainLayout(){
+
+    const navigate = useNavigate();
     const [descriptionIndex, setDescriptionIndex] = useState(0);
 
     useEffect(() =>{
@@ -36,7 +38,7 @@ function MainLayout(){
                     <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
                         로그인
                     </button>
-                    <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
+                    <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={() => navigate('/SignUp') }>
                         회원가입
                     </button>
                 </div>
