@@ -34,22 +34,23 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public ResponseEntity<EmailValidResponseFormDTO> valid(EmailValidFormDTO emailValidFormDTO) throws MessagingException {
-        if(emailValidFormDTO.getEmail() == null || emailValidFormDTO.getEmail().isBlank()){
-            return new ResponseEntity<>(new EmailValidResponseFormDTO("보내는 사람의 정보가 없습니다"), HttpStatus.BAD_REQUEST);
+        if(emailValidFormDTO.getEmail() == null || emailValidFormDTO.getEmail().isBlank()){     // 받는 사람 정보가 없을 경우
+            return new ResponseEntity<>(new EmailValidResponseFormDTO("보내는 사람의 정보가 없습니다" , null), HttpStatus.BAD_REQUEST);
         }
 
-        System.out.println(emailValidFormDTO.getEmail());
 
         String verificationCode = generateVerificationCode();   // 인증번호 발급
 
-        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessage message = javaMailSender.createMimeMessage();           // 메서지 객체 생성
         MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 
+        // 메시지 정보 입력
         helper.setTo(emailValidFormDTO.getEmail());
         helper.setSubject("이메일 인증코드");
         helper.setText("인증번호: " + verificationCode);
 
+        // 메시지 보내기
         javaMailSender.send(message);
-        return new ResponseEntity<>(new EmailValidResponseFormDTO("인증번호를 전송 했습니다.") , HttpStatus.OK);
+        return new ResponseEntity<>(new EmailValidResponseFormDTO("인증번호를 전송 했습니다." , verificationCode) , HttpStatus.OK);
     }
 }

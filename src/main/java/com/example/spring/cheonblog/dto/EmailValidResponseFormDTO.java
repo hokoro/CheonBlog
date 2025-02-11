@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EmailValidResponseFormDTO {
     private String message;
+    private String number;
 }
