@@ -72,6 +72,7 @@ function SignUp(){
         if(name==='emailVerification'){
             if(value === localStorage.getItem("number")){
                 setEmailCheckValid(true);
+                setEmailMessage("이메일 인증에 성공했습니다.");
             }else{
                 setEmailCheckValid(false);
             }
@@ -172,7 +173,7 @@ function SignUp(){
 
                 {nameValid && emailValid && passwordValid && passwordCheckValid && emailCheckValid &&
                     <div className="m-[2rem]">
-                        <button type="submit"
+                        <button type="button"
                                 className="border rounded-[2rem] w-[150px] h-[40px] bg-black text-white hover:text-orange-500" onClick={handleSignUpClick}>SignUp
                         </button>
                     </div>
