@@ -2,6 +2,7 @@ package com.example.spring.cheonblog.controller;
 
 import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.service.interfaces.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,8 @@ public class UserAPIController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<LoginResponseFormDTO> login(@RequestBody LoginFormDTO loginFormDTO) {
-        return userService.login(loginFormDTO);
+    public ResponseEntity<LoginResponseFormDTO> login(@RequestBody LoginFormDTO loginFormDTO , HttpServletResponse response) {
+        return userService.login(loginFormDTO , response);
     }
 
     @PostMapping("/user/redis")

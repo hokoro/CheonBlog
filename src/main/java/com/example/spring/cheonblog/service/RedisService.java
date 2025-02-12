@@ -29,7 +29,9 @@ public class RedisService {
 
     // email을 Key refresh Token을 얻는 과정
     public String getRefreshToken(String email){
-        return (String) redisTemplate.opsForValue().get(email);
+        Object token = redisTemplate.opsForValue().get(email);
+
+        return token != null ? token.toString():null;
     }
 
     // 삭제
@@ -43,7 +45,7 @@ public class RedisService {
         long ttl = expirationTime - currentTime;    // Time-To-Leave
 
         if(ttl > 0){
-            redisTemplate.opsForValue().set(token,"true",ttl,TimeUnit.MILLISECONDS);    // 만료시간 지나면 자동으로 삭제하게 등록
+            redisTemplate.opsForValue().set(token,"BLACKLIST",ttl,TimeUnit.MILLISECONDS);    // 만료시간 지나면 자동으로 삭제하게 등록
         }
     }
 

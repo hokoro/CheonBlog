@@ -5,6 +5,7 @@ import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.jwt.JwtUtil;
 import com.example.spring.cheonblog.repository.UserRepository;
 import com.example.spring.cheonblog.service.interfaces.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,14 +54,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseEntity<LoginResponseFormDTO> login(LoginFormDTO loginFormDTO) {
+    public ResponseEntity<LoginResponseFormDTO> login(LoginFormDTO loginFormDTO, HttpServletResponse response) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(loginFormDTO.getEmail()));
 
         if (user.isPresent() && passwordEncoder.matches(loginFormDTO.getPassword(), user.get().getPassword())) {    // 로그인 정보가 일치 했을 때
             String accessToken = jwtUtil.generateAccessToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
             String refreshToken = jwtUtil.generateRefreshToken(loginFormDTO.getEmail());              // JwtUtil을 사용해 jwt 토큰 생성
 
-            redisService.saveRefreshToken(loginFormDTO.getEmail() , passwordEncoder.encode(refreshToken));
+            redisService.saveRefreshToken(loginFormDTO.getEmail(), refreshToken);
 
             return new ResponseEntity<>(new LoginResponseFormDTO(accessToken ,refreshToken, "로그인 성공했습니다."),HttpStatus.OK);
         }
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<RefreshResponseFormDTO> refresh(RefreshFormDTO refreshFormDTO){
         String refreshToken = refreshFormDTO.getRefreshToken();
 
-        if(refreshToken!=null && jwtUtil.validateToken(refreshToken)){
+        if(refreshToken!=null && jwtUtil.validateToken(refreshToken , redisService)){
             String email = jwtUtil.getEmailFromToken(refreshToken);
             if(passwordEncoder.matches(refreshToken, redisService.getRefreshToken(email))){
                 String newAccessToken = jwtUtil.generateAccessToken(email);
@@ -93,14 +94,17 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<LogoutResponseFormDTO> logout(LogoutFormDTO logoutFormDTO) {
         String accessToken = logoutFormDTO.getAccessToken();
 
-        if (accessToken.startsWith("Bearer ")) {  // Bearer 문자 제거
+        accessToken = accessToken.trim();   // 앞뒤 공백 제거
+
+        if (accessToken.startsWith("Bearer ")) {
             accessToken = accessToken.substring(7);
         }
 
-        if (jwtUtil.validateToken(accessToken)) {       // 검증된 사용자인지
+        if (jwtUtil.validateToken(accessToken , redisService)) {       // 검증된 사용자인지
             String email = jwtUtil.getEmailFromToken(accessToken);   // 이메일 추출
             long expiration = jwtUtil.getExpirationTime(accessToken);   // 시간 추출
             redisService.addToBlacklist(accessToken, expiration);  // 사용자 블랙리스트 등록
+            redisService.deleteRefreshToken(email); // 리프래쉬 토큰 삭제
             redisService.deleteLoginInfo(email);    // 로그아웃 시 redis에 남아있는 회원 정보 삭제
             return new ResponseEntity<>(new LogoutResponseFormDTO("로그아웃 되었습니다."),HttpStatus.OK);
         } else {

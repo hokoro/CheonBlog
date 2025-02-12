@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {     // 요�
             throws ServletException, IOException {
 
         String token = getTokenFromRequest(request);            //HTTP 요청에서 JWT 토큰을 추출
-        if (token != null && jwtUtil.validateToken(token)) {    // 토큰이 존재하고 검증도 완벽한 경우
+        if (token != null && jwtUtil.validateToken(token , redisService)) {    // 토큰이 존재하고 검증도 완벽한 경우
 
             // 블랙리스트 확인 (Redis에서 확인)
             if (redisService.isBlackList(token)) {

@@ -124,6 +124,7 @@ function SignUp(){
             const data = await response.json();
             if(response.ok){
                 console.log(data.message);
+                localStorage.removeItem('number');
                 navigate('/');
             }else{
                 console.log(data.message);
