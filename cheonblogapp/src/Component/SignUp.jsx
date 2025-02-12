@@ -79,7 +79,7 @@ function SignUp(){
 
 
     };
-
+    // 이메일 인증 API 호출
     const handleEmailVerification = async () =>{
         setEmailButtonClick(true);
 
@@ -102,6 +102,35 @@ function SignUp(){
             console.log("인증 요청중 오류 발생:" , error);
         }
 
+    }
+
+    // 회원가입 API 호출
+    const handleSignUpClick = async(event) =>{
+        event.preventDefault(); // 폼 제출 및 새로고침 방지
+
+        try{
+            const response = await fetch('https://localhost:7942/api/user/create',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                    name: formData.name
+                }),
+            });
+            const data = await response.json();
+            if(response.ok){
+                console.log(data.message);
+                navigate('/');
+            }else{
+                console.log(data.message);
+            }
+
+        }catch (error){
+            console.log("인증 요청중 오류 발생:" , error);
+        }
     }
 
     return(
@@ -144,7 +173,7 @@ function SignUp(){
                 {nameValid && emailValid && passwordValid && passwordCheckValid && emailCheckValid &&
                     <div className="m-[2rem]">
                         <button type="submit"
-                                className="border rounded-[2rem] w-[150px] h-[40px] bg-black text-white hover:text-orange-500">SignUp
+                                className="border rounded-[2rem] w-[150px] h-[40px] bg-black text-white hover:text-orange-500" onClick={handleSignUpClick}>SignUp
                         </button>
                     </div>
                 }
