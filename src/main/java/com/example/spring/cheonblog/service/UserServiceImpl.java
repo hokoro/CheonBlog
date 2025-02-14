@@ -113,4 +113,23 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    // detail
+    @Override
+    public ResponseEntity<UserResponseDetailFormDTO> detail(UserDetailFormDTO userDetailFormDTO){
+        String accessToken = userDetailFormDTO.getAccessToken();    // accessToken
+        accessToken = accessToken.trim();   // 앞뒤 공백 제거
+
+        if(accessToken.startsWith("Bearer ")){
+            accessToken = accessToken.substring(7);
+        }
+
+        if(jwtUtil.validateToken(accessToken , redisService)){
+            String email = jwtUtil.getEmailFromToken(accessToken);
+            String name = userRepository.findByEmail(email).getName();
+            return new ResponseEntity<>(new UserResponseDetailFormDTO(email , name) , HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new UserResponseDetailFormDTO(null  , null), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }

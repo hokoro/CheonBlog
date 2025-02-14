@@ -37,5 +37,9 @@ public class UserAPIController {
         return userService.logout(logoutFormDTO);
     }
 
+    @PostMapping("/user/detail")
+    public ResponseEntity<UserResponseDetailFormDTO> detail(@RequestBody UserDetailFormDTO userDetailFormDTO){
+        return userService.detail(userDetailFormDTO);
+    }
 
 }

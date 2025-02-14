@@ -14,5 +14,7 @@ public interface UserService {
 
     ResponseEntity<LogoutResponseFormDTO> logout(LogoutFormDTO logoutFormDTO);
 
+    ResponseEntity<UserResponseDetailFormDTO> detail(UserDetailFormDTO userDetailFormDTO);
+
 
 }
