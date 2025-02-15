@@ -5,7 +5,7 @@ import UserLayout from "./Layout/UserLayout/jsx/UserLayout";
 import SignUp from "./Component/SignUp";
 import Login from "./Component/Login";
 import Account from "./Component/Account";
-
+import Delete from "./Component/Delete";
 
 function App(){
   return(
@@ -18,6 +18,7 @@ function App(){
                   <Route path="/signup" element={<SignUp/>}/>
                   <Route path="/login" element={<Login/>}/>
                   <Route path="/account" element={<Account/>}/>
+                  <Route path="/delete" element={<Delete/>}/>
               </Route>
           </Routes>
 
