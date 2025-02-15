@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
             accessToken = accessToken.substring(7);
         }
 
-        if(jwtUtil.validateToken(accessToken , redisService)){
+        if(jwtUtil.validateToken(accessToken , redisService)){  // 토큰을 이용한 정상 접근이 허용된 유저인지 검증
             String email = jwtUtil.getEmailFromToken(accessToken);
             String name = userRepository.findByEmail(email).getName();
             return new ResponseEntity<>(new UserResponseDetailFormDTO(email , name) , HttpStatus.OK);
