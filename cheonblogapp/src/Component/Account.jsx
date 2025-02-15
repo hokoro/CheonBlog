@@ -1,4 +1,4 @@
-import React , {useEffect , useState} from 'react';
+import React , {useEffect , useState,useCallback} from 'react';
 import {useNavigate}  from "react-router-dom";
 
 
@@ -20,13 +20,8 @@ function Account(){
         }
     }, [isAuthentication , navigate]);
 
-    useEffect(() => {
-        if(isAuthentication){
-            fetchUserInfo();
-        }
-    }, [isAuthentication]);
 
-    const fetchUserInfo = async () =>{
+    const fetchUserInfo = useCallback(async () =>{  // 함수를 의존성 배열에 포함시키기 위해서
         try{
             const response = await fetch("https://localhost:7942/api/user/detail",{
                 method:'POST',
@@ -39,8 +34,6 @@ function Account(){
             });
             const data = await response.json();
             if(response.ok){
-                console.log(data.email);
-                console.log(data.name);
                 setFormData({
                     email: data.email,
                     name: data.name
@@ -53,7 +46,14 @@ function Account(){
         }catch (error){
             console.error("회원 정보를 불러오는 중: " , error);
         }
-    }
+    },[isAuthentication , navigate]);
+
+
+    useEffect(() => {
+        if(isAuthentication){
+            fetchUserInfo();
+        }
+    }, [isAuthentication , fetchUserInfo]);
 
     return(
         <div className="Account">
