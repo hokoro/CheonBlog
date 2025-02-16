@@ -42,4 +42,9 @@ public class UserAPIController {
         return userService.detail(userDetailFormDTO);
     }
 
+    @PostMapping("/user/delete")
+    public ResponseEntity<UserResponseFormDTO> delete(@RequestBody UserDeleteFormDTO userDeleteFormDTO){
+        return userService.delete(userDeleteFormDTO);
+    }
+
 }

@@ -132,4 +132,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //delete
+    @Override
+    public ResponseEntity<UserResponseFormDTO> delete(UserDeleteFormDTO userDeleteFormDTO){
+        String accessToken = userDeleteFormDTO.getAccessToken();
+        accessToken = accessToken.trim();
+
+        if(accessToken.startsWith("Bearer ")){
+            accessToken = accessToken.substring(7);
+        }
+
+        if(jwtUtil.validateToken(accessToken , redisService)){
+            String email = jwtUtil.getEmailFromToken(accessToken);
+            Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
+            if(user.isEmpty()){ // 회원 정보가 조회되지 않을 때
+                return new ResponseEntity<>(new UserResponseFormDTO("조회되는 회원 정보가 없습니다.") , HttpStatus.NOT_FOUND);
+            }else{ // 회원 정보가 조회될 때
+                User deleteUser = userRepository.findByEmail(email);
+                userRepository.delete(deleteUser);
+                return new ResponseEntity<>(new UserResponseFormDTO("정상 탈퇴 되었습니다.") , HttpStatus.OK);
+            }
+
+        }else{
+            return new ResponseEntity<>(new UserResponseFormDTO("토큰이 유효하지 않습니다.") , HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+
 }
