@@ -159,5 +159,32 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    // update
+    @Override
+    public ResponseEntity<UserResponseFormDTO> update(UserUpdateFormDTO userUpdateFormDTO){
+        String accessToken = userUpdateFormDTO.getAccessToken();
+        accessToken = accessToken.trim();
+
+        if(accessToken.startsWith("Bearer ")){
+            accessToken = accessToken.substring(7);
+        }
+
+        if(jwtUtil.validateToken(accessToken , redisService)){
+            String email = jwtUtil.getEmailFromToken(accessToken);
+            Optional<User> searchUser = Optional.ofNullable(userRepository.findByEmail(email));
+            if(searchUser.isPresent()){
+                User user = searchUser.get();
+                user.setName(userUpdateFormDTO.getName());
+                user.setPassword(passwordEncoder.encode(userUpdateFormDTO.getPassword()));
+                userRepository.save(user);
+                return new ResponseEntity<>(new UserResponseFormDTO("회원 정보가 수정 되었습니다.") , HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(new UserResponseFormDTO("조회되는 회원 정보가 없습니다."),HttpStatus.NOT_FOUND);
+            }
+        }else{
+            return new ResponseEntity<>(new UserResponseFormDTO("유효한 토큰이 아닙니다.") , HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 
 }

@@ -18,5 +18,7 @@ public interface UserService {
 
     ResponseEntity<UserResponseFormDTO> delete(UserDeleteFormDTO userDeleteFormDTO);
 
+    ResponseEntity<UserResponseFormDTO> update(UserUpdateFormDTO userUpdateFormDTO);
+
 
 }

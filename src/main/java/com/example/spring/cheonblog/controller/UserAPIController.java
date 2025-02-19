@@ -2,13 +2,11 @@ package com.example.spring.cheonblog.controller;
 
 import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.service.interfaces.UserService;
+import jakarta.persistence.PostUpdate;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -42,9 +40,14 @@ public class UserAPIController {
         return userService.detail(userDetailFormDTO);
     }
 
-    @PostMapping("/user/delete")
+    @DeleteMapping("/user/delete")
     public ResponseEntity<UserResponseFormDTO> delete(@RequestBody UserDeleteFormDTO userDeleteFormDTO){
         return userService.delete(userDeleteFormDTO);
+    }
+
+    @PutMapping("/user/update")
+    public ResponseEntity<UserResponseFormDTO> update(@RequestBody UserUpdateFormDTO userUpdateFormDTO){
+        return userService.update(userUpdateFormDTO);
     }
 
 }
