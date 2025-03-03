@@ -6,6 +6,7 @@ import SignUp from "./Component/SignUp";
 import Login from "./Component/Login";
 import Account from "./Component/Account";
 import Delete from "./Component/Delete";
+import Update from "./Component/Update";
 
 function App(){
   return(
@@ -19,6 +20,7 @@ function App(){
                   <Route path="/login" element={<Login/>}/>
                   <Route path="/account" element={<Account/>}/>
                   <Route path="/delete" element={<Delete/>}/>
+                  <Route path="/update" element={<Update/>}/>
               </Route>
           </Routes>
 

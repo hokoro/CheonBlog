@@ -39,7 +39,7 @@ function Account(){
                     name: data.name
                 });
             }else{
-                console.log("유저 정보를 불러올 수 없습니다.")
+                console.log("유저 정보를 불러올 수 없습니다.");
                 navigate('/');
             }
 
@@ -72,6 +72,7 @@ function Account(){
                 <div className="m-[2rem] flex gap-4 justify-center">
                     <button type="button"
                             className="border rounded-[2rem] w-[150px] h-[40px] bg-black text-white hover:text-orange-500"
+                            onClick={() => navigate('/Update')}
                     >Update
                     </button>
                     <button type="button"
