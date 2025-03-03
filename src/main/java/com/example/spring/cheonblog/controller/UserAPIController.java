@@ -50,4 +50,9 @@ public class UserAPIController {
         return userService.update(userUpdateFormDTO);
     }
 
+    @PostMapping("/user/match")
+    public ResponseEntity<UserResponseFormDTO> match(@RequestBody UserMatchFormDTO userMatchFormDTO){
+        return userService.match(userMatchFormDTO);
+    }
+
 }

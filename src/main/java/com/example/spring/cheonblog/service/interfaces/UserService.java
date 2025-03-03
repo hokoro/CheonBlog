@@ -20,5 +20,7 @@ public interface UserService {
 
     ResponseEntity<UserResponseFormDTO> update(UserUpdateFormDTO userUpdateFormDTO);
 
+    ResponseEntity<UserResponseFormDTO> match(UserMatchFormDTO userMatchFormDTO);
+
 
 }

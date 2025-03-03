@@ -186,5 +186,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // match API 
+    @Override
+    public ResponseEntity<UserResponseFormDTO> match(UserMatchFormDTO userMatchFormDTO){
+            if(userMatchFormDTO.getName().isBlank() || userMatchFormDTO.getEmail().isBlank()){
+                return new ResponseEntity<>(new UserResponseFormDTO("회원 정보를 조회할 수 없습니다."),HttpStatus.BAD_REQUEST);
+            }
+
+            Optional<User>member = Optional.ofNullable(userRepository.findByNameAndEmail(userMatchFormDTO.getName(), userMatchFormDTO.getEmail()));
+
+            if(member.isPresent()){
+                return new ResponseEntity<>(new UserResponseFormDTO("존재하는 회원 정보입니다."),HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(new UserResponseFormDTO("일치하는 회원 정보가 없습니다."),HttpStatus.NOT_FOUND);
+            }
+        
+    }
+
 
 }
