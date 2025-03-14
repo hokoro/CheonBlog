@@ -8,7 +8,7 @@ function Delete(){
     const handleClickDelete = async () =>{
         try{
             const response = await fetch('https://localhost:7942/api/user/delete',{
-                method:'POST',
+                method:'DELETE',
                 headers:{
                     'Content-Type':'application/json',
                 },

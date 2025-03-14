@@ -77,6 +77,7 @@ function Account(){
                     </button>
                     <button type="button"
                             className="border rounded-[2rem] w-[150px] h-[40px] bg-black text-white hover:text-orange-500"
+                            onClick={() => navigate('/Delete')}
                     >Delete
                     </button>
                 </div>
