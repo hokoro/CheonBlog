@@ -76,25 +76,45 @@ function MainLayout(){
             <div className="md:w-1/3 flex items-center justify-center bg-white p-10">
                 {!isLogin&&
                     <div className="text-center items-center justify-center">
-                        <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600"
-                                onClick={() => navigate('/Login')}>
-                            로그인
-                        </button>
-                        <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600"
-                                onClick={() => navigate('/SignUp')}>
-                            회원가입
-                        </button>
+                        <div>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600"
+                                    onClick={() => navigate('/Login')}>
+                                로그인
+                            </button>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600"
+                                    onClick={() => navigate('/SignUp')}>
+                                회원가입
+                            </button>
+                        </div>
+                        <div>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
+                                비밀번호 찾기 
+                            </button>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
+                                서비스 소개
+                            </button>
+                        </div>
                     </div>
+       
+           
                 }
                 {isLogin &&
                     <div className="text-center items-center justify-center">
-                        <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
-                            서비스 이용
-                        </button>
-                        <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={handleLogoutClick}>
-                            로그아웃
-                        </button>
+                        <div> 
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
+                                서비스 이용
+                            </button>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={handleLogoutClick}>
+                                로그아웃
+                            </button>
+                        </div>
+                        <div>
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={() => navigate('/Account')}>
+                                마이 페이지 
+                            </button>
+                        </div>
                     </div>
+                    
                 }
             </div>
         </div>
