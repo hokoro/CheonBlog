@@ -17,12 +17,14 @@ function Sidebar(){
     return(
         <>
         {!menuButtonCheckValid && (
-            <div className="mx-[4px] my-[8px] px-[4px] py-[8px]">
-                <span className="material-symbols-outlined hover:scale-125 transition-transform duration-200">
-                    <button type="button" onClick={handleMenuClick}>
-                        double_arrow
-                    </button>
-                </span>
+            <div className="m-[8px] md:w-[15rem] flex flex-col">
+                <div className="flex items-start px-[4px] py-[8px]">
+                    <span className="material-symbols-outlined hover:scale-125 transition-transform duration-200">
+                        <button type="button" onClick={handleMenuClick}>
+                            double_arrow
+                        </button>
+                    </span>
+                </div>
             </div>
         )}
         <div className={`fixed top-0 left-0 h-full bg-[#FAF3E0] transition-transform duration-500 ease-in-out ${menuButtonCheckValid ? "translate-x-0" : "-translate-x-full"} md:w-[15rem] flex flex-col z-20`}>
@@ -44,6 +46,18 @@ function Sidebar(){
                 </div>
             </div>
             <hr/>
+            <div className="m-[8px] flex gap-[10px]">
+                <span className="material-symbols-outlined px-[4px] py-[8px]">
+                    search
+                </span>
+                <p className="px-[4px] py-[8px]">문서 검색</p>
+            </div>
+            <div className="m-[8px] flex gap-[10px]">
+                <span class="material-symbols-outlined px-[4px] py-[8px]">
+                    home
+                </span>
+                <p className="px-[4px] py-[8px]">홈</p>
+            </div>
         </div>
         </>
     );
