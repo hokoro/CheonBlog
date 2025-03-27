@@ -7,6 +7,7 @@ import Login from "./Component/Login";
 import Account from "./Component/Account";
 import Delete from "./Component/Delete";
 import Update from "./Component/Update";
+import BlogLayout from './Layout/BlogLayout/jsx/BlogLayout';
 
 function App(){
   return(
@@ -22,8 +23,14 @@ function App(){
                   <Route path="/delete" element={<Delete/>}/>
                   <Route path="/update" element={<Update/>}/>
               </Route>
+          
+          
+             <Route path="/blog" element={<BlogLayout/>}>
+                    
+             </Route>
+          
           </Routes>
-
+          
       </Router>
   );
 }
