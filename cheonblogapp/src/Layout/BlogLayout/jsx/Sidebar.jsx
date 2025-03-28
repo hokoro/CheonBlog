@@ -58,6 +58,20 @@ function Sidebar(){
                 </span>
                 <p className="px-[4px] py-[8px]">홈</p>
             </div>
+            <hr/>
+            <div className="flex items-start m-[8px] gap-[90px]">
+                <div className="px-[4px] py-[8px]">
+                    <span>작성 글</span>
+                </div>
+                <div className="px-[4px] py-[8px] flex gap-[10px]">
+                    <span className="material-symbols-outlined hover:scale-125 transition-transform duration-200">
+                        more_horiz
+                    </span>
+                    <span className="material-symbols-outlined hover:scale-125 transition-transform duration-200">
+                        add
+                    </span>
+                </div>
+            </div>
         </div>
         </>
     );
