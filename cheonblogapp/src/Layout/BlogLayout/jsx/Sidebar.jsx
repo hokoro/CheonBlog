@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Sidebar(){
+    const navigate = useNavigate();
     const [menuButtonCheckValid , setMenuButtonCheckValid] = useState(true);    // 메뉴 클릭 여부 false - > 사이드 바 사라짐 / true -> 사이드 바 생성 
 
     const handleMenuClick = () =>{
@@ -53,7 +54,7 @@ function Sidebar(){
                 <p className="px-[4px] py-[8px]">문서 검색</p>
             </div>
             <div className="m-[8px] flex gap-[10px]">
-                <span class="material-symbols-outlined px-[4px] py-[8px]">
+                <span className="material-symbols-outlined px-[4px] py-[8px]" onClick={() => navigate('/')}>
                     home
                 </span>
                 <p className="px-[4px] py-[8px]">홈</p>

@@ -101,7 +101,7 @@ function MainLayout(){
                 {isLogin &&
                     <div className="text-center items-center justify-center">
                         <div> 
-                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600">
+                            <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={() => navigate('/Blog')}>
                                 서비스 이용
                             </button>
                             <button className="p-3 bg-slate-500 rounded-2xl py-2 px-4 m-3 hover:bg-slate-600" onClick={handleLogoutClick}>
