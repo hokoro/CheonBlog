@@ -2,7 +2,6 @@ package com.example.spring.cheonblog.controller;
 
 import com.example.spring.cheonblog.dto.*;
 import com.example.spring.cheonblog.service.interfaces.UserService;
-import jakarta.persistence.PostUpdate;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -7,4 +7,5 @@ import com.example.spring.cheonblog.domain.Category;
 
 public interface CategoryRepository extends JpaRepository<Category , Long> {
     
+    Category findByName(String name);
 }

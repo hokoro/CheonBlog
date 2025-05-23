@@ -7,4 +7,6 @@ import lombok.*;
 @Setter
 public class CategoryCreateFormDTO {
     private String name;
+    private String description;
+    private String accessToken;
 }
